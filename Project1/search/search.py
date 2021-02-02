@@ -91,6 +91,22 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+    visited = []
+    frontier = util.Stack()
+    current = problem.getStartState(), []
+    while not problem.isGoalState(current[0]):
+        if current[0] not in visited:
+            visited += [current[0]]
+            successor = problem.getSuccessors(current[0])
+            for i in successor:
+                cur_metadata = current[1] + [i[1]]
+                frontier.push((i[0], cur_metadata))
+
+        current = frontier.pop()
+    return current[1]
+        
+
+
     util.raiseNotDefined()
 
 
@@ -99,6 +115,21 @@ def breadthFirstSearch(problem):
     Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
+
+    visited = []
+    frontier = util.Queue()
+    current = problem.getStartState(), []
+    while not problem.isGoalState(current[0]):
+        if current[0] not in visited:
+            visited += [current[0]]
+            successor = problem.getSuccessors(current[0])
+            for i in successor:
+                cur_metadata = current[1] + [i[1]]
+                frontier.push((i[0], cur_metadata))
+
+        current = frontier.pop()
+    return current[1]
+
     util.raiseNotDefined()
 
 
@@ -107,6 +138,20 @@ def uniformCostSearch(problem):
     Search the node of least total cost first.
     """
     "*** YOUR CODE HERE ***"
+    visited = []
+    frontier = util.PriorityQueue()
+    current = problem.getStartState(), [], 0
+    while not problem.isGoalState(current[0]):
+        if current[0] not in visited:
+            visited += [current[0]]
+            successor = problem.getSuccessors(current[0])
+            for i in successor:
+                cur_metadata = current[1] + [i[1]]
+                cost = problem.getCostOfActions(cur_metadata)
+                frontier.push((i[0], cur_metadata), cost)  
+
+        current = frontier.pop()
+    return current[1]
     util.raiseNotDefined()
 
 
@@ -123,6 +168,22 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     Search the node that has the lowest combined cost and heuristic first.
     """
     "*** YOUR CODE HERE ***"
+
+    visited = []
+    frontier = util.PriorityQueue()
+    current = problem.getStartState(), [], 0
+    while not problem.isGoalState(current[0]):
+        if current[0] not in visited:
+            visited += [current[0]]
+            successor = problem.getSuccessors(current[0])
+            for i in successor:
+                cur_metadata = current[1] + [i[1]]
+                cost = problem.getCostOfActions(cur_metadata) + heuristic(i[0], problem)
+                frontier.push((i[0], cur_metadata), cost)  
+
+        current = frontier.pop()
+    return current[1]
+
     util.raiseNotDefined()
 
 
