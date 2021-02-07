@@ -502,10 +502,10 @@ def foodHeuristic(state, problem):
     Your heuristic for the FoodSearchProblem goes here.
 
     This heuristic must be consistent to ensure correctness.  First, try to come up
-    with an admissible heuristic; almost all admissible heuristics will be consistent
+    with an admissible heuristic; almost all admissble heuristics will be consistent
     as well.
 
-    If using A* ever finds a solution that is worse uniform cost search finds,
+    If using A* ever fins a solution that is worse uniform cost search finds,
     your heuristic is *not* consistent, and probably not admissible!  On the other hand,
     inadmissible or inconsistent heuristics may find optimal solutions, so be careful.
 
@@ -532,7 +532,30 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    return_val = 0
+    univisited = foodGrid.asList()
+    if len(univisited) == 0:
+        return 0
+
+    maxi = 999999
+    cur = 0
+    for item in univisited:
+        cur_min = 999999
+        closest = None
+        for corner in univisited:
+            dist = util.manhattanDistance(position, corner)
+            if dist != 0 and dist <= cur_min:
+                closest = corner
+                cur_min = dist
+
+        if cur > 0 and maxi > cur_min:
+            maxi = cur_min
+        return_val += cur_min
+        position = closest
+        cur += 1
+    if len(univisited) <= 1:
+        return return_val
+    return return_val - maxi
 
 
 class ClosestDotSearchAgent(SearchAgent):
